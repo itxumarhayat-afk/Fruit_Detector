@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Fruit Detector</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-emoji"></div>
+            <h1>Fruit Detector</h1>
+            <p>Train your own AI model on your own food photos</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="detect">🔍 Detect</button>
+            <button class="tab-btn" data-tab="train">🧠 Train Model</button>
+        </div>
+
+        <!-- ============== DETECT TAB ============== -->
+        <div class="tab-content active" id="tab-detect">
+
+            <div class="model-status" id="modelStatus">
+                <span id="modelStatusText">Checking model status...</span>
+            </div>
+
+            <!-- Upload Box -->
+            <div class="upload-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-icon">📷</div>
+                    <p class="drop-text">Drop an image here</p>
+                    <p class="drop-subtext">or</p>
+                    <label class="upload-btn" for="fileInput">
+                        📂 Choose Image
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <p class="format-text">Supported: JPG, PNG, WEBP, GIF, BMP</p>
+                </div>
+
+                <!-- Preview -->
+                <div class="preview-section" id="previewSection" style="display:none;">
+                    <div class="preview-wrapper">
+                        <img id="previewImg" src="" alt="Preview">
+                        <button class="remove-btn" id="removeBtn">✕ Remove</button>
+                    </div>
+                    <button class="detect-btn" id="detectBtn">
+                        🔍 Detect
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display:none;">
+                <div class="spinner"></div>
+                <p>AI is sniffing the food... 🤔</p>
+            </div>
+
+            <!-- Results -->
+            <div class="results" id="results" style="display:none;">
+                <div class="result-card" id="resultCard">
+                    <div class="result-emoji" id="resultEmoji"></div>
+                    <div class="result-label" id="resultLabel"></div>
+                    <div class="confidence-bar-wrapper">
+                        <div class="confidence-label">Confidence: <span id="confValue"></span>%</div>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confFill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- All Predictions -->
+                <div class="predictions-section">
+                    <h3>🧠 Top Predictions</h3>
+                    <div id="predictionsList"></div>
+                </div>
+
+                <!-- Try Again -->
+                <button class="try-again-btn" id="tryAgainBtn">🔄 Try Again</button>
+            </div>
+
+            <!-- Error -->
+            <div class="error-box" id="errorBox" style="display:none;">
+                <p id="errorMsg"></p>
+            </div>
+        </div>
+
+        <!-- ============== TRAIN TAB ============== -->
+        <div class="tab-content" id="tab-train">
+
+            <div class="info-card">
+                <h3>📁 1. Add Your Dataset</h3>
+                <p>Put <strong>all</strong> your food photos in one folder:</p>
+                <pre class="code-block">dataset/images/
+    pizza_0001.jpg
+    pizza_0002.jpg
+    burger_0001.jpg
+    sushi_0001.jpg
+    ...</pre>
+                <p>Labels are read from <strong>dataset/labels.csv</strong> (filename, label columns) if it exists -
+                   otherwise from the start of each filename
+                   (e.g. <code>pizza_0001.jpg</code> &rarr; <code>pizza</code>).</p>
+                <p>You can use as many images and as many different foods as you like.</p>
+            </div>
+
+            <!-- Dataset summary -->
+            <div class="info-card">
+                <h3>📊 2. Dataset Summary</h3>
+                <button class="secondary-btn" id="refreshDatasetBtn">🔄 Refresh</button>
+                <div id="datasetSummary" class="dataset-summary">
+                    <p class="muted">Loading dataset info...</p>
+                </div>
+            </div>
+
+            <!-- Training controls -->
+            <div class="info-card">
+                <h3>🚀 3. Train the Model</h3>
+
+                <div class="train-options">
+                    <label>
+                        Epochs
+                        <input type="number" id="epochsInput" value="10" min="1" max="100">
+                    </label>
+                    <label>
+                        Batch size
+                        <input type="number" id="batchSizeInput" value="16" min="1" max="128">
+                    </label>
+                </div>
+
+                <button class="detect-btn" id="trainBtn">🚀 Start Training</button>
+
+                <div class="train-progress" id="trainProgress" style="display:none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="trainMessage" class="muted"></p>
+                </div>
+
+                <div class="error-box" id="trainErrorBox" style="display:none;">
+                    <p id="trainErrorMsg"></p>
+                </div>
+
+                <div class="success-box" id="trainSuccessBox" style="display:none;">
+                    <p id="trainSuccessMsg"></p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
